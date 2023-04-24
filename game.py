@@ -1,6 +1,7 @@
 class TicTacToe:
     def __init__(self):
-        pass
+        self.board = [' ' for _ in range(9)]
+        self.current_winner = None # keep track of winner!
     
     def print_board(self):
         # Getting the rows
@@ -16,3 +17,31 @@ class TicTacToe:
 
     def available_moves(self):
         return [i for i, spot in enumerate(self.board) if spot == ' ']
+    
+    def empty_squares(self):
+        return ' ' in self.board
+    
+    def num_empty_squares(self):
+        return self.board.count(' ')
+    
+    def make_move(self, square, letter):
+        # if valid move, then make the move (assign to letter)
+        # then return ture. If invalid, return false
+        if self.board[square] == ' ':
+          self.board[square] = letter
+          return True
+        return False
+    
+def play(game, x_player, o_player, print_game=True):
+    if print_game:
+        game.print_board_nums()
+
+    letter = 'X' # starting letter
+    #iterate while the game still has empty squares
+    while game.empty_squares():
+        # get the move from the appropriate player
+        if letter == 'O':
+            square = o_player.get_move(game)
+        else:
+            square = x_player.get_move(game)
+
