@@ -29,10 +29,40 @@ class TicTacToe:
         # then return ture. If invalid, return false
         if self.board[square] == ' ':
           self.board[square] = letter
+          if self.winner(square, letter):
+              self.current_winner = letter
           return True
         return False
     
+    def winner(self, square, letter):
+        # Winner if 3 in a row anywhere, we have to check all of these!
+        row_ind = square // 3
+        row = self.board[row_ind*3 : (row_ind + 1) * 3]
+        if all([spot == letter for spot in row]):
+            return True
+
+        #check column
+        col_ind = square % 3
+        column = [self.board[col_ind+i*3] for i in range(3)]
+        if all([spot == letter for spot in row]):
+            return True
+        
+        #check diagonals
+        # but only if the square is an even number (0, 2, 4, 6, 8)
+        # these ar the only moves possible to win a diagonal
+        if square % 2 == 0:
+            diagonal1 = [self.board[i] for i in [0, 4, 8]] #top left to bottom right diagonal
+            if all([spot == letter for spot in diagonal1]):
+              return True
+            diagonal2 = [self.board[i] for i in [2, 4, 6]] #top right to botton left diagonal
+            if all([spot == letter for spot in diagonal2]):
+              return True
+            
+        # if all of these checks fail, 
+        return False
+
 def play(game, x_player, o_player, print_game=True):
+    # returns the winner of the game (the letter) or none, which is a tie
     if print_game:
         game.print_board_nums()
 
@@ -44,4 +74,28 @@ def play(game, x_player, o_player, print_game=True):
             square = o_player.get_move(game)
         else:
             square = x_player.get_move(game)
+        
+        # let's ddefine a function to make a move!
+        if game.make_move(square, letter):
+            if print_game:
+                print(letter + f' makes a move to square {square}')
+                game.print_board()
+                print(' ') #just empty line print
+
+            if game.current_winner:
+                 if print_game:
+                     print(letter + ' wins!')
+                 return letter
+
+        #after we made our move, we need to alternate letters
+        letter = 'O' if letter = 'X' else 'X'
+        
+        # Another way of writing this is
+        # if letter == 'X':
+        #     letter = 'O'
+        # else:
+        #     letter = 'X'
+
+        if print_game:
+            print('It\'s a tie')
 
