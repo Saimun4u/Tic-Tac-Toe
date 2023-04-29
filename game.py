@@ -1,8 +1,9 @@
+import time
 from player import HumanPlayer, RandomComputerPlayer
 
 class TicTacToe:
     def __init__(self):
-        self.board = [' ' for _ in range(9)]
+        self.board = [' ' for _ in range(9)] # Single list is used to represent a 3x3 board
         self.current_winner = None # keep track of winner!
     
     def print_board(self):
@@ -13,7 +14,7 @@ class TicTacToe:
     @staticmethod
     def print_board_nums():
         # Tells us 0 | 1 | 2 what number corresponds to what box
-        number_board = [[str[i] for i in range(j*3, (j+1)*3)] for j in range(3)]
+        number_board = [[str(i) for i in range(j*3, (j+1)*3)] for j in range(3)]
         for row in number_board:
            print('| ' + ' | '.join(row) + ' |')
 
@@ -89,8 +90,11 @@ def play(game, x_player, o_player, print_game=True):
                      print(letter + ' wins!')
                  return letter
 
-        #after we made our move, we need to alternate letters
-        letter = 'O' if letter = 'X' else 'X'
+            #after we made our move, we need to alternate letters
+            letter = 'O' if letter == 'X' else 'X' # switches player
+
+        # tiny breaks afther each player selects a spot
+        time.sleep(0.8)
         
         # Another way of writing this is
         # if letter == 'X':
@@ -98,11 +102,11 @@ def play(game, x_player, o_player, print_game=True):
         # else:
         #     letter = 'X'
 
-        if print_game:
-            print('It\'s a tie')
+    if print_game:
+      print('It\'s a tie')
 
 if __name__ == '__main__':
-    x_player = Humanplayer('X')
+    x_player = HumanPlayer('X')
     o_player = RandomComputerPlayer('O')
     t = TicTacToe()
     play(t, x_player, o_player, print_game=True)
